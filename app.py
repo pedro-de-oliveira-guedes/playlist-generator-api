@@ -42,17 +42,21 @@ def recommend_songs():
     if not songs:
         return jsonify({"error": "No songs provided"}), 400
     
-    recommendation_model, model_last_update = get_model_data()
+    try:
+        recommendation_model, model_last_update = get_model_data()
 
-    recommendations = get_recommendations(songs, recommendation_model)
-    if not recommendations or len(recommendations) == 0:
-        recommendations = DEFAULT_RECOMMENDATIONS
-    
-    return jsonify({
-        "songs": recommendations,
-        "model_date": model_last_update,
-        "version": API_VERSION,
-    })
+        recommendations = get_recommendations(songs, recommendation_model)
+        if not recommendations or len(recommendations) == 0:
+            recommendations = DEFAULT_RECOMMENDATIONS
+        
+        return jsonify({
+            "songs": recommendations,
+            "model_date": model_last_update,
+            "version": API_VERSION,
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
