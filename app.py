@@ -37,6 +37,7 @@ app = Flask(__name__)
 
 @app.route("/api/recommend", methods=["POST"])
 def recommend_songs():
+    print("Received request to recommend songs")
     songs = request.json.get("songs")
 
     if not songs:
@@ -60,4 +61,5 @@ def recommend_songs():
 
 
 if __name__ == "__main__":
+    print("Starting Playlist Generator API...")
     app.run(host="0.0.0.0", port=52055)
