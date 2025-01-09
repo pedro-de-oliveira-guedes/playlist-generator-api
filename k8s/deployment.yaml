@@ -13,9 +13,9 @@ spec:
         app: pedro-playlist-generator-api
     spec:
       volumes:
-        - name: playlist-generator-api
+        - name: project2-pv2-pedroguedes
           persistentVolumeClaim:
-            claimName: playlist-generator-api
+            claimName: project2-pv2-pedroguedes
       containers:
         - name: playlist-generator-api
           image:  pedroufmg/playlist-generator-api:latest
