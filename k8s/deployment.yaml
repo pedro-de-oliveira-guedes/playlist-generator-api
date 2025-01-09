@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playlist-generator-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: playlist-generator-api
+  template:
+    metadata:
+      labels:
+        app: pedro-playlist-generator-api
+    spec:
+      volumes:
+        - name: playlist-generator-api
+          persistentVolumeClaim:
+            claimName: playlist-generator-api
+      containers:
+        - name: playlist-generator-api
+          image:  pedroufmg/playlist-generator-api:latest
+          volumeMounts:
+            - name: playlist-generator-api
+              mountPath: /usr/src
+          ports:
+          - containerPort: 52055
