@@ -2,25 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pedroguedes-playlist-generator-api-deployment
+  namespace: pedroguedes
+  labels:
+    app: playlist-generator-api
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: pedro-playlist-generator-api
+      app: playlist-generator-api
   template:
     metadata:
       labels:
-        app: pedro-playlist-generator-api
+        app: playlist-generator-api
     spec:
       volumes:
-        - name: project2-pv2-pedroguedes
+        - name: persistent-volume
           persistentVolumeClaim:
             claimName: project2-pv2-pedroguedes
       containers:
-        - name: pedro-playlist-generator-api
+        - name: playlist-generator-api
           image:  pedroufmg/playlist-generator-api:latest
           volumeMounts:
-            - name: project2-pv2-pedroguedes
-              mountPath: /usr/src
+            - name: persistent-volume
+              mountPath: /app/data
           ports:
           - containerPort: 52055
