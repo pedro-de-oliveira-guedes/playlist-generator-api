@@ -9,4 +9,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  selector:
+    matchLabels:
+      namespace: pedroguedes
   storageClassName: default-storage-class-pedroguedes
