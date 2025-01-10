@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: project2-pvc-pedroguedes
+  name: project2-pv2-pedroguedes
   namespace: pedroguedes
 spec:
   accessModes:
