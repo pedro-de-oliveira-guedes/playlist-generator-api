@@ -9,4 +9,4 @@ spec:
   ports:
     - protocol: TCP
       port: 52055
-      targetPort: 52055
+      targetPort: 7777

@@ -62,4 +62,4 @@ def recommend_songs():
 
 if __name__ == "__main__":
     print("Starting Playlist Generator API...")
-    app.run(host="0.0.0.0", port=52055)
+    app.run(host="0.0.0.0", port=7777)

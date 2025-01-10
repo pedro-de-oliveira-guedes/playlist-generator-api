@@ -26,4 +26,4 @@ spec:
             - name: persistent-volume
               mountPath: /app/data
           ports:
-          - containerPort: 52055
+          - containerPort: 7777
