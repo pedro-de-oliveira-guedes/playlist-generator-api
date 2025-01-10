@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 import pickle
 import random
@@ -33,6 +34,7 @@ def get_recommendations(songs: list[str], recommendation_model: dict[str, set[st
 
 
 app = Flask(__name__)
+CORS(app, origins=["*"])
 
 
 @app.route("/api/recommend", methods=["POST"])
