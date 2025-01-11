@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import os
 import pickle
@@ -32,6 +32,18 @@ def get_recommendations(songs: list[str], recommendation_model: dict[str, set[st
 
 app = Flask(__name__)
 CORS(app, origins=["*"])
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
+
+
+@app.route("/api/all-musics", methods=["GET"])
+def get_all_musics():
+    recommendation_model, _ = get_model_data()
+
+    return jsonify(list(recommendation_model.keys()))
 
 
 @app.route("/api/recommend", methods=["POST"])
