@@ -27,3 +27,5 @@ spec:
               mountPath: /app/data
           ports:
           - containerPort: 7777
+      imagePullSecrets:
+        - name: regcred
