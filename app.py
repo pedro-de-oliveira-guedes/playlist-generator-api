@@ -7,7 +7,7 @@ import random
 
 
 MODEL_LOCATION = os.getenv("MODEL_LOCATION", "/app/data/playlists_rules.pkl")
-DEFAULT_RECOMMENDATIONS = os.getenv("DEFAULT_RECOMMENDATIONS", ["iSpy (feat. Lil Yachty)", "Panda", "Chill Bill"])
+DEFAULT_RECOMMENDATIONS = os.getenv("DEFAULT_RECOMMENDATIONS", ["iSpy (feat. Lil Yachty)", "Panda", "Chill Bill", "Life Is A Highway"])
 MAX_RECOMMENDATIONS = int(os.getenv("MAX_RECOMMENDATIONS", 10))
 API_VERSION = os.getenv("API_VERSION", "0.0")
 
