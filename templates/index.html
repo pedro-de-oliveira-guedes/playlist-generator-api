@@ -47,7 +47,7 @@
                         onclick="getRecommendations()"
                         class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
                     >
-                        Recomendar!
+                        Recomendar
                     </button>
                 </div>
 
@@ -57,6 +57,12 @@
                 >
                     <h2 class="text-2xl font-bold text-white mb-4">Músicas sugeridas</h2>
                     <div id="recommendationsList" class="space-y-2">
+                    </div>
+                    <div id="noRecommendationsMessage" class="text-red-500 hidden">
+                        Desculpe, não encontramos nenhuma recomendação para as músicas informadas.<br><br>Tente outros nomes!
+                    </div>
+                    <div id="errorRecommendationsMessage" class="text-red-500 hidden">
+                        Desculpe, ocorreu um erro ao buscar as recomendações.<br><br>Tente novamente mais tarde.
                     </div>
                 </div>
             </main>
@@ -125,7 +131,7 @@
                                         <span class="text-white">${song}</span>
                                         <button onclick="removeSong(${index})" 
                                                 class="text-red-500 hover:text-red-700 transition">
-                                                Remove
+                                                Remover
                                         </button>
                                 `;
                     playlistDiv.appendChild(songElement);
@@ -151,23 +157,33 @@
                     })
                     .catch((error) => {
                         console.error("Error:", error);
+                        showRecommendations([], error = true);
                     });
             }
 
-            function showRecommendations(recommendations) {
+            function showRecommendations(recommendations, error = false) {
                 const recommendationsDiv = document.getElementById("recommendations");
-                const recommendationsList = document.getElementById(
-                    "recommendationsList"
-                );
+                const recommendationsList = document.getElementById("recommendationsList");
+                const noRecommendationsMessage = document.getElementById("noRecommendationsMessage");
+                const errorRecommendationsMessage = document.getElementById("errorRecommendationsMessage");
+                
                 recommendationsDiv.classList.remove("hidden");
-
                 recommendationsList.innerHTML = "";
-                recommendations.forEach((song) => {
-                    const songElement = document.createElement("div");
-                    songElement.className = "bg-gray-700 p-3 rounded";
-                    songElement.textContent = song;
-                    recommendationsList.appendChild(songElement);
-                });
+                noRecommendationsMessage.classList.add("hidden");
+                errorRecommendationsMessage.classList.add("hidden");
+
+                if (error) {
+                    errorRecommendationsMessage.classList.remove("hidden");
+                } else if (recommendations.length === 0) {
+                    noRecommendationsMessage.classList.remove("hidden");
+                } else {
+                    recommendations.forEach((song) => {
+                        const songElement = document.createElement("div");
+                        songElement.className = "bg-gray-700 p-3 rounded";
+                        songElement.textContent = song;
+                        recommendationsList.appendChild(songElement);
+                    });
+                }
             }
         </script>
     </body>
