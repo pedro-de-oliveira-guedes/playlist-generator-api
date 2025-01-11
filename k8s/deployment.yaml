@@ -21,11 +21,14 @@ spec:
             claimName: project2-pv2-pedroguedes
       containers:
         - name: playlist-generator-api
-          image:  pedroufmg/playlist-generator-api:latest
+          image:  pedroufmg/playlist-generator-api:v0
           volumeMounts:
             - name: persistent-volume
               mountPath: /app/data
           ports:
           - containerPort: 7777
+          env:
+            - name: API_VERSION
+              value: "v0"
       imagePullSecrets:
         - name: regcred
