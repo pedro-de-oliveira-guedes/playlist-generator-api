@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Playlist Recommender</title>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body class="bg-gray-900 text-white min-h-screen">
+        <header class="bg-gray-800 p-4 flex items-center">
+            <img src="static/img/spotify-logo.png" alt="Spotify Logo" class="h-8 mr-4" />
+            <h1 class="text-2xl font-bold">Cloud Computing TP2: Pedro de Oliveira Guedes</h1>
+        </header>
+        <div class="flex">
+            <main class="flex-1 p-6">
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                    <h1 class="text-3xl font-bold text-white mb-6">
+                        Recomendador de músicas
+                    </h1>
+
+                    <div class="mb-6">
+                        <form onsubmit="addSong(event)" class="flex gap-2 mb-4">
+                            <input
+                                type="text"
+                                id="songInput"
+                                list="songsList"
+                                placeholder="Digite o nome da música"
+                                class="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-400 bg-gray-700 text-white"
+                            />
+                            <datalist id="songsList"></datalist>
+                            <button
+                                type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+                            >
+                                Adicionar
+                            </button>
+                        </form>
+
+                        <div id="playlist" class="space-y-2">
+                        </div>
+                    </div>
+
+                    <button
+                        onclick="getRecommendations()"
+                        class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+                    >
+                        Recomendar!
+                    </button>
+                </div>
+
+                <div
+                    id="recommendations"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 hidden"
+                >
+                    <h2 class="text-2xl font-bold text-white mb-4">Músicas sugeridas</h2>
+                    <div id="recommendationsList" class="space-y-2">
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            let songs = [];
+            let allMusics = [];
+
+            document.addEventListener("DOMContentLoaded", () => {
+                fetch("api/all-musics")
+                    .then((response) => response.json())
+                    .then((musics) => {
+                        allMusics = musics;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching musics:", error);
+                    });
+
+                const songInput = document.getElementById("songInput");
+                songInput.addEventListener("input", updateDatalist);
+            });
+
+            function updateDatalist() {
+                const songInput = document.getElementById("songInput");
+                const songsList = document.getElementById("songsList");
+                const inputValue = songInput.value.toLowerCase();
+
+                songsList.innerHTML = "";
+
+                allMusics
+                    .filter((music) => music.toLowerCase().includes(inputValue))
+                    .forEach((music) => {
+                        const option = document.createElement("option");
+                        option.value = music;
+                        songsList.appendChild(option);
+                    });
+            }
+
+            function addSong(event) {
+                event.preventDefault();
+                const songInput = document.getElementById("songInput");
+                const song = songInput.value.trim();
+
+                if (song) {
+                    songs.push(song);
+                    updatePlaylist();
+                    songInput.value = "";
+                }
+            }
+
+            function removeSong(index) {
+                songs.splice(index, 1);
+                updatePlaylist();
+            }
+
+            function updatePlaylist() {
+                const playlistDiv = document.getElementById("playlist");
+                playlistDiv.innerHTML = "";
+
+                songs.forEach((song, index) => {
+                    const songElement = document.createElement("div");
+                    songElement.className =
+                        "flex justify-between items-center bg-gray-700 p-3 rounded";
+                    songElement.innerHTML = `
+                                        <span class="text-white">${song}</span>
+                                        <button onclick="removeSong(${index})" 
+                                                class="text-red-500 hover:text-red-700 transition">
+                                                Remove
+                                        </button>
+                                `;
+                    playlistDiv.appendChild(songElement);
+                });
+            }
+
+             function getRecommendations() {
+                if (songs.length === 0) {
+                    alert("Please add some songs to your playlist first!");
+                    return;
+                }
+
+                fetch("/api/recommend", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ songs }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        showRecommendations(data.songs);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+
+            function showRecommendations(recommendations) {
+                const recommendationsDiv = document.getElementById("recommendations");
+                const recommendationsList = document.getElementById(
+                    "recommendationsList"
+                );
+                recommendationsDiv.classList.remove("hidden");
+
+                recommendationsList.innerHTML = "";
+                recommendations.forEach((song) => {
+                    const songElement = document.createElement("div");
+                    songElement.className = "bg-gray-700 p-3 rounded";
+                    songElement.textContent = song;
+                    recommendationsList.appendChild(songElement);
+                });
+            }
+        </script>
+    </body>
+</html>
