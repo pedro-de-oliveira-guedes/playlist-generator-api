@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: playlist-generator-api-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: pedro-playlist-generator-api
   ports:
@@ -11,3 +11,4 @@ spec:
       port: 52055
       targetPort: 7777
       nodePort: 52055
+      externalTrafficPolicy: Cluster
