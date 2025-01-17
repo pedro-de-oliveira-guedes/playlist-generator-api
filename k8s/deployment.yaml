@@ -4,23 +4,23 @@ metadata:
   name: pedroguedes-playlist-generator-api-deployment
   namespace: pedroguedes
   labels:
-    app: playlist-generator-api
+    app: pedro-playlist-generator-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: playlist-generator-api
+      app: pedro-playlist-generator-api
   template:
     metadata:
       labels:
-        app: playlist-generator-api
+        app: pedro-playlist-generator-api
     spec:
       volumes:
         - name: persistent-volume
           persistentVolumeClaim:
             claimName: project2-pv2-pedroguedes
       containers:
-        - name: playlist-generator-api
+        - name: pedro-playlist-generator-api
           image:  pedroufmg/playlist-generator-api:0.4
           volumeMounts:
             - name: persistent-volume
