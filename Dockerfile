@@ -11,4 +11,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["python", "app.py"]
 
-EXPOSE 7777
+EXPOSE 52055
