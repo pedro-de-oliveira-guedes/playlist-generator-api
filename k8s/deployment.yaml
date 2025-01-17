@@ -21,7 +21,7 @@ spec:
             claimName: project2-pv2-pedroguedes
       containers:
         - name: pedro-playlist-generator-api
-          image:  pedroufmg/playlist-generator-api:0.5
+          image:  pedroufmg/playlist-generator-api:0.6
           volumeMounts:
             - name: persistent-volume
               mountPath: /app/data
@@ -29,6 +29,6 @@ spec:
           - containerPort: 52055
           env:
             - name: API_VERSION
-              value: "0.5"
+              value: "0.6"
       imagePullSecrets:
         - name: regcred
